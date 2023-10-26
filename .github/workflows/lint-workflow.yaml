@@ -1,0 +1,46 @@
+name: GitHub Workflow Related Checks
+
+# Any change in triggers needs to be reflected in the concurrency group.
+on:
+  pull_request: {}
+  push:
+    branches:
+      - main
+
+permissions: read-all
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.event.pull_request.number || github.event.after }}
+  cancel-in-progress: true
+
+jobs:
+  name-validation:
+    name: Validate Workflow Names
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+        with:
+          persist-credentials: false
+          # hard-code the path instead of using ${{ github.repository }} to make sure it works for forked repo as well
+          path: src/github.com/cilium/cilium
+
+      - name: Validate Job and Step names
+        shell: bash
+        run: |
+          EXIT=0
+          cd src/github.com/cilium/cilium/.github/workflows
+          for FILE in *.yaml;do
+            JOBS=$(yq '.jobs | to_entries | .[] | select(.value.name == null) | "  " + .key' $FILE)
+            STEPS=$(yq '.jobs | to_entries | .[] as $job | $job.value.steps[] | {"key": $job.key, "name": .name} | select(.name == null) | "  "+.key' $FILE)
+            if [ "${JOBS}" != "" ];then
+              echo Jobs are missing name field, in file $FILE
+              echo "${JOBS}" | awk '{for (i=1; i<=NF; i++) print "  " $i}'
+              EXIT=1
+            fi
+            if [ "${STEPS}" != "" ];then
+              echo Steps are missing name field, under these Jobs in file $FILE
+              echo "${STEPS}" | awk '{for (i=1; i<=NF; i++) print "  " $i}'
+              EXIT=1
+            fi
+          done
