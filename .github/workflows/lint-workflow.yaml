@@ -44,3 +44,23 @@ jobs:
               EXIT=1
             fi
           done
+
+  chaos-validation:
+    name: Chaos Validation
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
+        with:
+          persist-credentials: false
+          # hard-code the path instead of using ${{ github.repository }} to make sure it works for forked repo as well
+          path: src/github.com/testomraade/mergeq
+
+      - name: Validate Someties
+        shell: bash
+        run: |
+          num=$RANDOM
+          # Test if it's divisible by 2
+          if (( num % 2 == 0 )); then
+              echo Sorry, $num is divisible by 2. It is time to fail"
+          fi
