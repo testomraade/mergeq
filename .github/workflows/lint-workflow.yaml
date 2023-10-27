@@ -23,13 +23,13 @@ jobs:
         with:
           persist-credentials: false
           # hard-code the path instead of using ${{ github.repository }} to make sure it works for forked repo as well
-          path: src/github.com/cilium/cilium
+          path: src/github.com/testomraade/mergeq
 
       - name: Validate Job and Step names
         shell: bash
         run: |
           EXIT=0
-          cd src/github.com/cilium/cilium/.github/workflows
+          cd src/github.com/testomraade/mergeq/.github/workflows
           for FILE in *.yaml;do
             JOBS=$(yq '.jobs | to_entries | .[] | select(.value.name == null) | "  " + .key' $FILE)
             STEPS=$(yq '.jobs | to_entries | .[] as $job | $job.value.steps[] | {"key": $job.key, "name": .name} | select(.name == null) | "  "+.key' $FILE)
