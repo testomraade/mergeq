@@ -65,3 +65,4 @@ jobs:
             echo "Sorry, $num is not divisible by 2. It is time to fail"
             exit 1
           fi
+

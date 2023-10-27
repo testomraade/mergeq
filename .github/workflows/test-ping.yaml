@@ -65,12 +65,6 @@ jobs:
           ref: ${{ inputs.context-ref || github.sha }}
           persist-credentials: false
 
-      - name: Get Cilium's default values
-        id: default_vars
-        uses: ./.github/actions/helm-default
-        with:
-          image-tag: ${{ inputs.SHA }}
-
       - name: Set up job variables
         id: vars
         run: |
@@ -116,3 +110,4 @@ jobs:
         with:
           sha: ${{ inputs.SHA || github.sha }}
           status: ${{ needs.build-and-test.result }}
+
