@@ -1,19 +1,11 @@
 language: go
 
-dist: focal
-sudo: required
-
-go: "1.21.3"
-
-jobs:
-  include:
-    - arch: arm64-graviton2
-      virt: vm
-      group: edge
+go:
+  - 1.21.3
 
 if: branch = main OR type = pull_request
 
-script: ./.travis/build.sh
+script: go build .
 
 notifications:
   email: false
