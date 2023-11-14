@@ -1,3 +1,3 @@
 # mergeq
 
-This is for testing merge group implementation
+This is for testing merge group implementation.
