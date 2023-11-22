@@ -58,6 +58,7 @@ jobs:
           args: "--out-${NO_FUTURE}format colored-line-number --verbose --modules-download-mode=vendor"
 
   wait-for-it:
+    if: ${{ github.event_name != 'merge_group' }}
     name: Just Wait for a While
     runs-on: ubuntu-latest
     steps:
