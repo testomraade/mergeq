@@ -57,3 +57,9 @@ jobs:
           skip-cache: true
           args: "--out-${NO_FUTURE}format colored-line-number --verbose --modules-download-mode=vendor"
 
+  wait-for-it:
+    name: Just Wait for a While
+    runs-on: ubuntu-latest
+    steps:
+      - name: Wait for it
+        run: sleep 180
