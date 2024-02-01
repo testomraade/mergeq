@@ -6,7 +6,3 @@ triggers:
 workflows:
   test-ping.yaml:
     paths-ignore-regex: (test|Documentation)/
-
-excluded-required-checks:
-  - "Check Go Modules"
-  - "Lint Source Code"
