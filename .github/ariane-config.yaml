@@ -9,6 +9,6 @@ workflows:
   test-ping.yaml:
     paths-ignore-regex: (test|Documentation)/
   test-somethings.yaml:
-    paths-ignore-regex: (test|Documentation)/
+    paths-ignore-regex: (test|Documentation|vendor)/
   test-readme.yaml:
     paths-regex: vendor/
