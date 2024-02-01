@@ -80,7 +80,7 @@ jobs:
 
       - name: Print date
         run: |
-          date
+          echo "Date" $(date)
 
   commit-status-final:
     if: ${{ always() }}
