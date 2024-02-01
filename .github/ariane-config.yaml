@@ -3,9 +3,12 @@ triggers:
     workflows:
     - test-ping.yaml
     - test-somethings.yaml
+    - test-vendor.yaml
 
 workflows:
   test-ping.yaml:
     paths-ignore-regex: (test|Documentation)/
   test-somethings.yaml:
     paths-ignore-regex: (test|Documentation)/
+  test-readme.yaml:
+    paths-regex: vendor/
