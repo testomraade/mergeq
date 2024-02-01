@@ -2,7 +2,10 @@ triggers:
   /test:
     workflows:
     - test-ping.yaml
+    - test-somethings.yaml
 
 workflows:
   test-ping.yaml:
+    paths-ignore-regex: (test|Documentation)/
+  test-somethings.yaml:
     paths-ignore-regex: (test|Documentation)/

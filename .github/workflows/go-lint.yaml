@@ -63,4 +63,4 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - name: Wait for it
-        run: sleep 180
+        run: sleep 5
