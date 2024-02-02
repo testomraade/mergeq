@@ -10,5 +10,5 @@ workflows:
     paths-ignore-regex: (test|Documentation)/
   test-somethings.yaml:
     paths-ignore-regex: (test|Documentation|vendor)/
-  test-readme.yaml:
+  test-vendor.yaml:
     paths-regex: vendor/
