@@ -4,6 +4,19 @@ triggers:
     - test-ping.yaml
     - test-somethings.yaml
     - test-vendor.yaml
+    - test-config.yaml
+  /ci-ping:
+    workflows:
+    - test-ping.yaml
+  /ci-somethings:
+    workflows:
+    - test-somethings.yaml 
+  /ci-vendor:
+    workflows:
+    - test-vendor.yaml
+  /ci-config:
+    workflows:
+    - test-config.yaml
 
 workflows:
   test-ping.yaml:
