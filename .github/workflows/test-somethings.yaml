@@ -78,7 +78,7 @@ jobs:
           ref: ${{ steps.vars.outputs.sha }}
           persist-credentials: false
 
-      - name: Print date
+      - name: Print-date
         run: |
           echo "Date $(date)"
 
