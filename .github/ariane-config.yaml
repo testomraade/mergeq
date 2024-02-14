@@ -1,3 +1,6 @@
+allowedteams:
+  - organization-members
+
 triggers:
   /test:
     workflows:
