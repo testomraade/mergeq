@@ -1,4 +1,4 @@
-allowedteams:
+allowed-teams:
   - organization-members
 
 triggers:
