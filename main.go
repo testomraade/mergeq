@@ -58,11 +58,6 @@ func main() {
 		os.Exit(1)
 	}
 
-	// for ip := range ips {
-	// 	d, err := p.Ping(ip.IPAddr(), time.Second)
-	// 	fmt.Println(ip, d, err)
-	// }
-
 	ipc := make(chan netaddr.IP, 10)
 	wg := sync.WaitGroup{}
 	writeLock := sync.Mutex{}
@@ -88,11 +83,6 @@ func main() {
 	}()
 
 	for ip := range ips {
-		// select {
-		// case ipc <- ip:
-		// default:
-		// 	continue
-		// }
 		ipc <- ip
 		wg.Add(1)
 	}
