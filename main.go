@@ -20,7 +20,7 @@ func main() {
 
 	nets := flag.Args()
 	if len(nets) == 0 {
-		fmt.Fprintln(os.Stderr, "at least one network/ip is required")
+		fmt.Fprintln(os.Stderr, "at least one ip, or ip-ip range, or network/ip is required")
 		os.Exit(1)
 	}
 
