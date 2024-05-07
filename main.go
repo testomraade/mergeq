@@ -3,7 +3,6 @@ package main
 import (
 	"flag"
 	"fmt"
-	"net"
 	"net/netip"
 	"os"
 	"sync"
@@ -60,32 +59,30 @@ func main() {
 	}
 
 	ipc := make(chan netip.Addr, 10)
-	wg := sync.WaitGroup{}
-	writeLock := sync.Mutex{}
+	rec := make(chan result, 10)
+	wgi, wgp := sync.WaitGroup{}, sync.WaitGroup{}
 
-	go func() {
-		for ip := range ipc {
-			go func(ip netip.Addr) {
-				_, err := p.Ping(&net.IPAddr{IP: ip.AsSlice()}, *timeout)
-
-				writeLock.Lock()
-				fmt.Print(ip, "\t")
-				if err == nil {
-					color.Green("UP")
-				} else {
-					color.Red("DOWN")
-				}
-				writeLock.Unlock()
-
-				wg.Done()
-			}(ip)
-		}
-	}()
+	runIcmpPing(p, &wgi, &wgp, ipc, rec)
 
 	for ip := range ips {
 		ipc <- ip
-		wg.Add(1)
+		wgi.Add(1)
 	}
 
-	wg.Wait()
+	go func() {
+		for res := range rec {
+			fmt.Print(res.ip, "\t")
+			if res.err == nil {
+				color.Green("UP")
+			} else {
+				color.Red("DOWN")
+			}
+			wgp.Done()
+		}
+	}()
+
+	wgi.Wait()
+	close(ipc)
+	wgp.Wait()
+	close(rec)
 }
