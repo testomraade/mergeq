@@ -8,6 +8,7 @@ triggers:
     - test-somethings.yaml
     - test-vendor.yaml
     - test-config.yaml
+    - test-failure.yaml
   /ci-ping:
     workflows:
     - test-ping.yaml
@@ -20,11 +21,16 @@ triggers:
   /ci-config:
     workflows:
     - test-config.yaml
+  /ci-failure:
+    workflows:
+    - test-failure.yaml
 
 workflows:
   test-ping.yaml:
     paths-ignore-regex: (test|Documentation)/
   test-somethings.yaml:
+    paths-ignore-regex: (test|Documentation|vendor)/
+  test-failure.yaml:
     paths-ignore-regex: (test|Documentation|vendor)/
   test-vendor.yaml:
     paths-regex: vendor/
