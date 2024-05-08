@@ -58,6 +58,10 @@ jobs:
   failure-test:
     name: Failure Test
     runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        index: [1,2,3,4]
     steps:
       - name: Checkout code
         uses: actions/checkout@8ade135a41bc03ea155e62e844d188df1ea18608 # v4.1.0
@@ -69,8 +73,12 @@ jobs:
         run: |
           num=${{ github.run_attempt }}
           # Test if it's divisible by 2
-          if (( num % 2 != 0 )); then
-            echo "Sorry, $num is not divisible by 2. It is time to fail"
+          if (( ${{ matrix.index }} % 2 == 0 )); then
+            echo "Nice division, allways succeed"
+            exit 0
+          fi
+          if [ $num -eq 1 ]; then
+            echo "Sorry, first run attemp fails all the time"
             exit 1
           fi
 
