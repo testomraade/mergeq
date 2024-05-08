@@ -8,11 +8,13 @@ import (
 	"github.com/digineo/go-ping"
 )
 
+// result represents run ping error and endpoint ip
 type result struct {
 	ip  netip.Addr
 	err error
 }
 
+// runIcmpPing runs icmp pings
 func runIcmpPing(p *ping.Pinger, wgi, wgp *sync.WaitGroup, ipc chan netip.Addr, rec chan result) {
 	go func() {
 		for ip := range ipc {
