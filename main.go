@@ -12,7 +12,11 @@ import (
 	"github.com/fatih/color"
 )
 
-var timeout = flag.Duration("timeout", time.Second, "ping timeout")
+var (
+	timeout  = flag.Duration("timeout", time.Second, "ping timeout")
+	pingType = flag.String("type", "icmp", "ping type to use (icmp,tcp)")
+	port     = flag.Int("port", 22, "tcp port to use")
+)
 
 func main() {
 	flag.Parse()
@@ -20,6 +24,13 @@ func main() {
 	nets := flag.Args()
 	if len(nets) == 0 {
 		fmt.Fprintln(os.Stderr, "at least one ip, or ip-ip range, or network/ip is required")
+		os.Exit(1)
+	}
+
+	switch *pingType {
+	case "icmp", "tcp":
+	default:
+		fmt.Fprintf(os.Stderr, "unkown ping type %s\n", *pingType)
 		os.Exit(1)
 	}
 
@@ -52,17 +63,21 @@ func main() {
 		}
 	}
 
-	p, err := ping.New("0.0.0.0", "::")
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		os.Exit(1)
-	}
-
 	ipc := make(chan netip.Addr, 10)
 	rec := make(chan result, 10)
 	wgi, wgp := sync.WaitGroup{}, sync.WaitGroup{}
 
-	runIcmpPing(p, &wgi, &wgp, ipc, rec)
+	switch *pingType {
+	case "icmp":
+		p, err := ping.New("0.0.0.0", "::")
+		if err != nil {
+			fmt.Fprintln(os.Stderr, err)
+			os.Exit(1)
+		}
+		runIcmpPing(p, &wgi, &wgp, ipc, rec)
+	case "tcp":
+		runTcpPing(*port, &wgi, &wgp, ipc, rec)
+	}
 
 	for ip := range ips {
 		ipc <- ip
